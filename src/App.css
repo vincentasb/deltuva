@@ -29,31 +29,15 @@
   pointer-events: none;
 }
 
-.backdrop::before,
-.backdrop::after {
-  content: '';
+.hero-dots {
   position: absolute;
-  inset: -6rem -4rem auto;
-  height: 17rem;
-  opacity: 0.58;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.backdrop::before {
-  background-image:
-    radial-gradient(circle, rgba(246, 252, 255, 0.18) 0.26rem, transparent 0.35rem),
-    radial-gradient(circle, rgba(224, 239, 255, 0.16) 0.2rem, transparent 0.31rem);
-  background-size: 2rem 2.5rem, 2.7rem 2.9rem;
-  background-position: 0 0, 1.15rem 0.65rem;
-  filter: blur(0.45px);
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 80%);
-}
-
-.backdrop::after {
-  background:
-    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.15), transparent 67%),
-    linear-gradient(to bottom, rgba(4, 8, 14, 0.08), transparent);
-  transform: translateY(-0.4rem);
-}
 
 .top-bar {
   position: relative;
@@ -83,6 +67,28 @@
   align-items: center;
   gap: 1.45rem;
   font-family: Helvetica, Arial, sans-serif;
+}
+
+.hamburger-toggle {
+  display: none;
+  width: 2.8rem;
+  height: 2.8rem;
+  border: 1px solid rgba(255, 255, 255, 0);
+  border-radius: 0.7rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.27rem;
+}
+
+.hamburger-toggle span {
+  width: 1.2rem;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.94);
 }
 
 .contact-btn {
@@ -185,7 +191,7 @@
 
 .hero {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   padding: 16vh 3.8rem 4rem;
   max-width: 70rem;
 }
@@ -362,5 +368,102 @@
 
   .hero h1 {
     max-width: 12ch;
+  }
+}
+
+@media (max-width: 767px) {
+  .top-bar {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    padding-top: 1.2rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .hamburger-toggle {
+    display: inline-flex;
+  }
+
+  .actions {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 1.6rem;
+    min-width: 14rem;
+    z-index: 60;
+    padding: 0.9rem 1rem;
+    border-radius: 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow: 0 20px 34px rgba(0, 0, 0, 0.36);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+  }
+
+  .actions.is-open {
+    display: flex;
+  }
+
+  .products-menu {
+    width: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
+  .nav-button {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .dropdown {
+    position: static;
+    top: auto;
+    right: auto;
+    min-width: 0;
+    width: 100%;
+    margin-top: 0.55rem;
+    padding: 0;
+    border-radius: 0.65rem;
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    overflow: hidden;
+    transform: none;
+    transition: opacity 180ms ease, max-height 180ms ease, visibility 180ms ease;
+  }
+
+  .products-menu.mobile-open .dropdown {
+    opacity: 1;
+    visibility: visible;
+    max-height: 9rem;
+    padding: 0.3rem 0;
+  }
+
+  .products-menu:hover .dropdown,
+  .products-menu:focus-within .dropdown {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    padding: 0;
+  }
+
+  .products-menu.mobile-open:hover .dropdown,
+  .products-menu.mobile-open:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    max-height: 9rem;
+    padding: 0.3rem 0;
+  }
+
+  .contact-btn,
+  .nav-link {
+    font-size: 1rem;
+  }
+
+  .contact-btn {
+    padding: 0.46rem 1.08rem;
   }
 }

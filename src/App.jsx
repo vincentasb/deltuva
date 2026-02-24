@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import logo from './assets/logo_white.png'
+import InteractiveDots from './components/InteractiveDots'
 
 const ROUTE_LABELS = {
   '/': 'Home',
@@ -86,36 +87,68 @@ function PageContent({ route }) {
 
 function App() {
   const [route, setRoute] = useState(() => normalizeHashRoute())
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false)
 
   useEffect(() => {
-    const onHashChange = () => setRoute(normalizeHashRoute())
+    const onHashChange = () => {
+      setRoute(normalizeHashRoute())
+      setMobileMenuOpen(false)
+      setMobileProductsOpen(false)
+    }
     window.addEventListener('hashchange', onHashChange)
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
+
+  const toggleProductsMenu = () => {
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      setMobileProductsOpen((prev) => !prev)
+    }
+  }
 
   const isLanding = route === '/'
 
   return (
     <div className="landing-page">
       <div className="backdrop" aria-hidden="true" />
+      {isLanding ? <InteractiveDots /> : null}
 
       <header className="top-bar">
         <a href="#/" className="brand" aria-label="Deltuva orbital systems home">
           <img src={logo} alt="Deltuva orbital systems" className="brand-logo" />
         </a>
 
-        <nav className="actions" aria-label="Primary navigation">
-          <div className="products-menu">
-            <button type="button" className="nav-link nav-button" aria-haspopup="true">
+        <button
+          type="button"
+          className="hamburger-toggle"
+          aria-label="Toggle navigation menu"
+          aria-controls="primary-navigation"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <nav id="primary-navigation" className={`actions ${mobileMenuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
+          <div className={`products-menu ${mobileProductsOpen ? 'mobile-open' : ''}`}>
+            <button
+              type="button"
+              className="nav-link nav-button"
+              aria-haspopup="true"
+              aria-expanded={mobileProductsOpen}
+              onClick={toggleProductsMenu}
+            >
               Products
             </button>
             <div className="dropdown" role="menu" aria-label="Products menu">
-              <a href="#/products/rf" role="menuitem">RF</a>
-              <a href="#/products/defense" role="menuitem">Defense</a>
+              <a href="#/products/rf" role="menuitem" onClick={() => setMobileProductsOpen(false)}>RF</a>
+              <a href="#/products/defense" role="menuitem" onClick={() => setMobileProductsOpen(false)}>Defense</a>
             </div>
           </div>
-          <a href="#/about" className="nav-link">About us</a>
-          <a href="#/contact" className="contact-btn">Contact us</a>
+          <a href="#/about" className="nav-link" onClick={() => setMobileMenuOpen(false)}>About us</a>
+          <a href="#/contact" className="contact-btn" onClick={() => setMobileMenuOpen(false)}>Contact us</a>
         </nav>
       </header>
 
