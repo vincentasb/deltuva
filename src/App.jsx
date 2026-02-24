@@ -7,6 +7,7 @@ const ROUTE_LABELS = {
   '/': 'Home',
   '/about': 'About us',
   '/contact': 'Contact us',
+  '/privacy': 'Privacy policy',
   '/products/rf': 'RF',
   '/products/defense': 'Defense',
 }
@@ -34,7 +35,91 @@ function PlaceholderCards({ items }) {
   )
 }
 
+function PrivacyPolicyContent() {
+  return (
+    <section className="page-shell policy-shell">
+      <p className="page-tag">Privacy policy</p>
+      <h1 className="page-title">Privacy Policy</h1>
+      <p className="page-intro">
+        Deltuva orbital systems is committed to protecting your personal information and handling data
+        transparently, securely, and lawfully.
+      </p>
+
+      <div className="policy-sections">
+        <section>
+          <h2>Personal information we collect</h2>
+          <p>
+            When you visit our website, we may automatically collect limited device and usage data such as browser
+            type, IP address, approximate region, referring pages, and interaction events. We may also collect data
+            you submit directly, such as your name, company name, email address, and message details when contacting us.
+          </p>
+        </section>
+
+        <section>
+          <h2>Why we process your data</h2>
+          <p>
+            We process data to operate and secure the website, answer inquiries, prevent abuse, and improve the
+            performance and relevance of our services. We only process personal data that is necessary for these purposes.
+          </p>
+        </section>
+
+        <section>
+          <h2>Your rights</h2>
+          <p>You may have rights regarding your personal data, including:</p>
+          <ul>
+            <li>The right to be informed</li>
+            <li>The right of access</li>
+            <li>The right to rectification</li>
+            <li>The right to erasure</li>
+            <li>The right to restrict processing</li>
+            <li>The right to data portability</li>
+            <li>The right to object</li>
+            <li>Rights in relation to automated decision-making and profiling</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Links to other websites</h2>
+          <p>
+            Our website may include links to third-party websites. We are not responsible for the privacy practices
+            or content of external websites.
+          </p>
+        </section>
+
+        <section>
+          <h2>Information security</h2>
+          <p>
+            We use technical and organizational safeguards designed to protect personal data from unauthorized access,
+            disclosure, misuse, or loss. No online transmission or storage system can be guaranteed to be fully secure.
+          </p>
+        </section>
+
+        <section>
+          <h2>Legal disclosure</h2>
+          <p>
+            We may disclose information if required by law, court order, or other lawful request, or when disclosure is
+            necessary to protect rights, safety, or prevent fraud.
+          </p>
+        </section>
+
+        <section>
+          <h2>Contact information</h2>
+          <p>
+            For questions about this Privacy Policy or to exercise your privacy rights, contact us at
+            {' '}
+            <a href="mailto:hello@deltuva.com">hello@deltuva.com</a>.
+          </p>
+        </section>
+      </div>
+    </section>
+  )
+}
+
 function PageContent({ route }) {
+  if (route === '/privacy') {
+    return <PrivacyPolicyContent />
+  }
+
   const content = {
     '/about': {
       title: 'About Deltuva',
@@ -44,8 +129,13 @@ function PageContent({ route }) {
       ],
     },
     '/contact': {
-      title: 'Contact us',
-      intro: 'Email: hello[at]deltuva.com',
+      title: 'Get in touch',
+      intro: (
+        <>
+          Email:{' '}
+          <a href="mailto:hello@deltuva.com">hello@deltuva.com</a>
+        </>
+      ),
       items: [
       ],
     },
@@ -89,6 +179,7 @@ function App() {
   const [route, setRoute] = useState(() => normalizeHashRoute())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false)
+  const [showCookiePanel, setShowCookiePanel] = useState(true)
 
   useEffect(() => {
     const onHashChange = () => {
@@ -109,7 +200,7 @@ function App() {
   const isLanding = route === '/'
 
   return (
-    <div className="landing-page">
+    <div className={`landing-page ${isLanding ? 'landing-home' : ''}`}>
       <div className="backdrop" aria-hidden="true" />
       {isLanding ? <InteractiveDots /> : null}
 
@@ -163,6 +254,42 @@ function App() {
           <PageContent route={route} />
         )}
       </main>
+
+      {showCookiePanel ? (
+        <aside className="cookie-panel" aria-live="polite" aria-label="Cookie consent">
+          <p className="cookie-text">
+            By clicking “Accept”, you agree to the storing of cookies on your device to enhance site navigation,
+            analyze site usage, and assist in our marketing efforts. View our
+            {' '}
+            <a href="#/privacy" className="cookie-link">Privacy Policy</a>
+            {' '}
+            for more information.
+          </p>
+          <div className="cookie-actions">
+            <button type="button" className="nav-link cookie-deny" onClick={() => setShowCookiePanel(false)}>
+              Deny
+            </button>
+            <button type="button" className="contact-btn cookie-accept" onClick={() => setShowCookiePanel(false)}>
+              Accept
+            </button>
+          </div>
+        </aside>
+      ) : null}
+
+      <footer className="site-footer">
+        <div className="footer-brand">
+          <a href="#/" className="footer-logo-link" aria-label="Deltuva orbital systems home">
+            <img src={logo} alt="Deltuva orbital systems" className="footer-logo" />
+          </a>
+          <p>© 2026. All rights reserved.</p>
+        </div>
+
+        <nav className="footer-links" aria-label="Footer navigation">
+          <a href="#/privacy">Privacy policy</a>
+          <a href="#/about">About us</a>
+          <a href="#/contact">Contact us</a>
+        </nav>
+      </footer>
     </div>
   )
 }
