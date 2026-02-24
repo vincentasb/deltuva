@@ -1,42 +1,366 @@
+:root {
+  --bg-0: #020408;
+  --bg-1: #05090f;
+  --bg-2: #0a111a;
+  --text: #f1f4f8;
+  --muted: rgba(241, 244, 248, 0.7);
+  --btn-bg: #f3f6fb;
+  --btn-text: #121820;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.landing-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 18% 16%, rgba(151, 174, 212, 0.13), transparent 32%),
+    radial-gradient(circle at 82% 10%, rgba(115, 140, 176, 0.12), transparent 30%),
+    linear-gradient(162deg, var(--bg-2) 0%, var(--bg-1) 44%, var(--bg-0) 100%);
 }
 
-@keyframes logo-spin {
+.backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.backdrop::before,
+.backdrop::after {
+  content: '';
+  position: absolute;
+  inset: -6rem -4rem auto;
+  height: 17rem;
+  opacity: 0.58;
+}
+
+.backdrop::before {
+  background-image:
+    radial-gradient(circle, rgba(246, 252, 255, 0.18) 0.26rem, transparent 0.35rem),
+    radial-gradient(circle, rgba(224, 239, 255, 0.16) 0.2rem, transparent 0.31rem);
+  background-size: 2rem 2.5rem, 2.7rem 2.9rem;
+  background-position: 0 0, 1.15rem 0.65rem;
+  filter: blur(0.45px);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 80%);
+}
+
+.backdrop::after {
+  background:
+    radial-gradient(ellipse at top, rgba(255, 255, 255, 0.15), transparent 67%),
+    linear-gradient(to bottom, rgba(4, 8, 14, 0.08), transparent);
+  transform: translateY(-0.4rem);
+}
+
+.top-bar {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.2rem 3.8rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: clamp(7rem, 9vw, 9.8rem);
+  height: auto;
+  object-fit: contain;
+  filter: brightness(1.06);
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.45rem;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.contact-btn {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--btn-text);
+  text-decoration: none;
+  background: var(--btn-bg);
+  padding: 0.6rem 1.8rem;
+  border-radius: 999px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.contact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(242, 247, 252, 0.2);
+}
+
+.nav-link {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 180ms ease, text-shadow 180ms ease;
+}
+
+.nav-link:hover {
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 0 18px rgba(242, 247, 252, 0.35);
+}
+
+.products-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 0.8rem;
+  margin-bottom: -0.8rem;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.nav-button::after {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+  transform: rotate(45deg) translateY(-0.1rem);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% - 0.1rem);
+  right: 0;
+  min-width: 10rem;
+  padding: 0.55rem 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.25rem);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
+}
+
+.dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+}
+
+.dropdown a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 16px rgba(242, 247, 252, 0.3);
+}
+
+.products-menu:hover .dropdown,
+.products-menu:focus-within .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  padding: 16vh 3.8rem 4rem;
+  max-width: 70rem;
+}
+
+.hero-page {
+  max-width: none;
+  padding-top: 8vh;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6.8vw, 6.2rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  max-width: 21ch;
+  text-wrap: balance;
+  animation: title-rise 860ms ease both;
+}
+
+.page-shell {
+  width: min(1120px, 100%);
+}
+
+.page-tag {
+  margin: 0 0 1rem;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.page-title {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: clamp(2rem, 4.6vw, 4.3rem);
+  line-height: 1.02;
+  font-weight: 400;
+  max-width: 17ch;
+}
+
+.page-intro {
+  margin: 1.1rem 0 2rem;
+  max-width: 62ch;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.placeholder-card {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px) saturate(130%);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+}
+
+.placeholder-media {
+  height: 9rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.9rem;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(155deg, rgba(7, 14, 24, 0.88), rgba(17, 29, 45, 0.62));
+}
+
+.placeholder-media img {
+  width: min(76%, 12rem);
+  opacity: 0.88;
+}
+
+.placeholder-card h3 {
+  margin: 0 0 0.4rem;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.placeholder-card p {
+  margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.45;
+}
+
+.page-back {
+  display: inline-flex;
+  margin-top: 1.2rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: Helvetica, Arial, sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+@keyframes title-rise {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(1.2rem);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 1000px) {
+  .top-bar,
+  .hero {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+  }
+
+  .top-bar {
+    padding-top: 1.4rem;
+    padding-bottom: 0.8rem;
+  }
+
+  .actions {
+    gap: 0.9rem;
+  }
+
+  .contact-btn,
+  .nav-link {
+    font-size: 1rem;
+  }
+
+  .contact-btn {
+    padding: 0.55rem 1.25rem;
+  }
+
+  .hero {
+    padding-top: 20vh;
+  }
+
+  .hero-page {
+    padding-top: 11vh;
+  }
+
+  .placeholder-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-.card {
-  padding: 2em;
-}
+@media (max-width: 620px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-.read-the-docs {
-  color: #888;
+  .actions {
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-btn {
+    font-size: 0.92rem;
+    padding: 0.46rem 0.98rem;
+  }
+
+  .nav-link {
+    font-size: 0.92rem;
+  }
+
+  .hero h1 {
+    max-width: 12ch;
+  }
 }
